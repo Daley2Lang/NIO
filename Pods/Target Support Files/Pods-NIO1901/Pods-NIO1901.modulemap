@@ -1,0 +1,6 @@
+framework module Pods_NIO1901 {
+  umbrella header "Pods-NIO1901-umbrella.h"
+
+  export *
+  module * { export * }
+}
