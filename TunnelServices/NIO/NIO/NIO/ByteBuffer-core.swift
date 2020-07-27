@@ -190,6 +190,13 @@ public struct ByteBufferAllocator {
 /// ### Notes
 /// All `ByteBuffer` methods that don't contain the word 'unsafe' will only allow you to access the 'readable bytes'.
 ///
+
+
+
+/*
+ SwiftNIO 提供了 ByteBuffer，一种快速的 Copy-On-Write 字节缓冲器，是大部分 SwiftNIO 应用程序的关键构建块。
+ ByteBuffer 提供了很多有用的特性以及一些“钩子”，通过这些钩子，我们可以在“unsafe”的模式下使用 ByteBuffer。这种方式可以获得更好的性能，代价是应用程序有可能出现内存问题。在一般情况下，还是建议在安全模式下使用 ByteBuffer。
+ */
 public struct ByteBuffer {
     @usableFromInline typealias Slice = _ByteBufferSlice
     @usableFromInline typealias Allocator = ByteBufferAllocator

@@ -52,7 +52,7 @@
 /// which means that each write attempt will fail.
 ///
 /// Accepted `SocketChannel`s operate on `ByteBuffer` as inbound data, and `IOData` as outbound data.
-public final class ServerBootstrap {
+public final class ServerBootstrap { //ServerBootstrap（用于监听 Channel）
 
     private let group: EventLoopGroup
     private let childGroup: EventLoopGroup
@@ -351,7 +351,7 @@ private extension Channel {
 /// ```
 ///
 /// The connected `SocketChannel` will operate on `ByteBuffer` as inbound and on `IOData` as outbound messages.
-public final class ClientBootstrap {
+public final class ClientBootstrap {//ClientBootstrap（用于 TCP Channel）
 
     private let group: EventLoopGroup
     private var channelInitializer: ((Channel) -> EventLoopFuture<Void>)?
@@ -576,7 +576,7 @@ public final class ClientBootstrap {
 /// ```
 ///
 /// The `DatagramChannel` will operate on `AddressedEnvelope<ByteBuffer>` as inbound and outbound messages.
-public final class DatagramBootstrap {
+public final class DatagramBootstrap { //DatagramBootstrap（用于 UDP Channel）
 
     private let group: EventLoopGroup
     private var channelInitializer: ((Channel) -> EventLoopFuture<Void>)?

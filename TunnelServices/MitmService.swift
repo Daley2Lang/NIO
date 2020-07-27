@@ -46,8 +46,8 @@ public class MitmService: NSObject {
     let worker = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount*3)
     
     //DatagramBootstrap 数据报引导
-    
-    var localBootstrap:ServerBootstrap!
+
+    var localBootstrap:ServerBootstrap! //监听
     var localChannel:Channel!
     var localBindIP = ""
     var localBindPort = -1
@@ -153,6 +153,7 @@ public class MitmService: NSObject {
         return newServer
     }
     
+    //MARK:开始运行
     public func run(_ callback: @escaping ((Result<Int, Error>) -> Void)) -> Void {
         compelete = callback
         task.startTime = NSNumber(value: Date().timeIntervalSince1970)
@@ -182,6 +183,7 @@ public class MitmService: NSObject {
         
     }
     
+    //MARK: 开启双端server
     public func openWifiServer(ip: String, port: Int,_ callback: ((Result<Int, Error>) -> Void)?){
         enableWifiServer = true
         
@@ -217,6 +219,7 @@ public class MitmService: NSObject {
         task.wifiState = 0
         try? task.update()
     }
+    
     
     public func openLocalServer(ip: String, port: Int,_ callback: ((Result<Int, Error>) -> Void)?){
         
@@ -255,7 +258,7 @@ public class MitmService: NSObject {
         task.localState = 0
         try? task.update()
     }
-    
+    //MARK: 回调数据
     func runcallback(){
         guard let callback = compelete else {
             return
@@ -380,6 +383,9 @@ public class MitmService: NSObject {
         }
     }
     
+    
+    
+    //MARK: - 获取相关文件和路径 -
     public static func getStoreFolder() -> String {
         if storeFolder != "" {
             return storeFolder

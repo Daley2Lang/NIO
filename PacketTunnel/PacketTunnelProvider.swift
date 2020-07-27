@@ -126,12 +126,12 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         packetFlow.readPackets { (packets, protocols) in
             for packet in packets {
                 NSLog("Read Packet:",String(data: packet, encoding: .utf8) ?? "unknow")
-                self.connection.write(packet, completionHandler: { (error) in
-                    if let e = error {
-//                        AxLogger.log("write packet error :\(e.localizedDescription)", level: .Error)
-                        NSLog("write packet error :\(e.localizedDescription)")
-                    }
-                })
+//                self.connection.write(packet, completionHandler: { (error) in
+//                    if let e = error {
+////                        AxLogger.log("write packet error :\(e.localizedDescription)", level: .Error)
+//                        NSLog("write packet error :\(e.localizedDescription)")
+//                    }
+//                })
             }
             self.readPakcets()
         }
