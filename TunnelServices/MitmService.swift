@@ -69,6 +69,9 @@ public class MitmService: NSObject {
     public init(task:Task) {
         super.init()
         
+        
+        LogOnline.sendLog(msg: "创建服务")
+        
         self.task = task
         let protocolDetector = ProtocolDetector(task: task ,matchers: [HttpMatcher(),HttpsMatcher(),SSLMatcher()])
         
@@ -160,8 +163,10 @@ public class MitmService: NSObject {
         task.createFileFolder()
         task.numberOfUse = NSNumber(value: task.numberOfUse.intValue + 1)
         
-        try? task.update()
         
+        LogOnline.sendLog(msg: "运行中。。。\(task.numberOfUse)")
+        
+        try? task.update()
         if task.localEnable == 1 {
             DispatchQueue.global().async {
                 //开启本地服务

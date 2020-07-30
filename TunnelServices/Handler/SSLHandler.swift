@@ -27,6 +27,7 @@ class SSLHandler: ChannelInboundHandler,RemovableChannelHandler {
     
     // 原始消息报文
     func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+        LogOnline.sendLog(msg: "流程打印 \(#function) in \(type(of: self))")
         scheduled.cancel()
         prepareProxyContext(context: context, data: data)
         //
