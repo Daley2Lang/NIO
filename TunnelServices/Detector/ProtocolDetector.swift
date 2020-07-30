@@ -34,6 +34,9 @@ public final class ProtocolDetector: ChannelInboundHandler, RemovableChannelHand
     }
     
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+        
+         LogOnline.sendLog(msg: "流程打印 \(#function) in \(type(of: self))")
+        
         if let local = context.channel.localAddress?.description {
             let isLocal = local.contains("127.0.0.1")
             if (isLocal && task.localEnable == 0) || (!isLocal && task.wifiEnable == 0) {
@@ -49,6 +52,9 @@ public final class ProtocolDetector: ChannelInboundHandler, RemovableChannelHand
         let buffer = unwrapInboundIn(data)
         //TODO: 需要处理粘包情况以及数据不完整情况
         for i in index..<matcherList.count {
+            
+            LogOnline.sendLog(msg: "处理器的数量:\(matcherList.count)")
+            
             let matcher = matcherList[i]
             let match = matcher.match(buf: buffer)
             if match == ProtocolMatcher.MATCH {
