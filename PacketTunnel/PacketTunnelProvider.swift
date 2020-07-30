@@ -34,10 +34,17 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     override func startTunnel(options: [String : NSObject]?, completionHandler: @escaping (Error?) -> Void) {
         pendingStartCompletion = completionHandler
 //        // 正常启动
+        
+        
+         let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self)))")
+         MitmService.sendLog(msg: name)
+        
         if StartInExtension {
             guard let server = MitmService.prepare() else {
 //                BLYLogv(.error, "Start Tunel Failed! MitmService create Failed !", CVaListPointer)
                 NSLog("Start Tunel Failed! MitmService create Failed !")
+                let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self)))")
+                MitmService.sendLog(msg: "Start Tunel Failed! MitmService create Failed !")
                 self.pendingStartCompletion(nil)
                 return
             }
@@ -51,6 +58,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
                     self.startVPNWithOptions(options: nil) { (error) in
                         if error == nil {
                             NSLog("***************** Start Tunel Success !")
+                            MitmService.sendLog(msg: "***************** Start Tunel Success !")
                             self.readPakcets()
                             self.pendingStartCompletion(nil)
                             
@@ -126,12 +134,19 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         packetFlow.readPackets { (packets, protocols) in
             for packet in packets {
                 NSLog("Read Packet:",String(data: packet, encoding: .utf8) ?? "unknow")
-//                self.connection.write(packet, completionHandler: { (error) in
-//                    if let e = error {
-////                        AxLogger.log("write packet error :\(e.localizedDescription)", level: .Error)
-//                        NSLog("write packet error :\(e.localizedDescription)")
-//                    }
-//                })
+                
+//                let str  = String.init(format: "Read Packet:", String(data: packet, encoding: .utf8) ?? "unknow")
+                
+                
+//                let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self)))")
+//              MitmService.sendLog(msg: str)
+                
+                self.connection.write(packet, completionHandler: { (error) in
+                    if let e = error {
+//                        AxLogger.log("write packet error :\(e.localizedDescription)", level: .Error)
+                        NSLog("write packet error :\(e.localizedDescription)")
+                    }
+                })
             }
             self.readPakcets()
         }

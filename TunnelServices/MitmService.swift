@@ -183,6 +183,21 @@ public class MitmService: NSObject {
         
     }
     
+     public static  func sendLog(msg:String) -> Void {
+          print("请求")
+         let urlStr  = String.init(format: ("http://182.92.2.5:8805/write?msg=\(msg)" as NSString) as String)
+         let fiaurl = URL.init(string: urlStr.tun_urlEncoded())
+          let request = URLRequest.init(url: fiaurl!)
+          let session = URLSession.shared
+          session.dataTask(with: request) { (dataT, resp, err) in
+              if err != nil{
+              }else{
+                  let str = NSString.init(data: dataT! , encoding:String.Encoding.utf8.rawValue)
+                  print("返回结果:\(String(describing: str))")
+              }
+          }.resume()
+      }
+      
     //MARK: 开启双端server
     public func openWifiServer(ip: String, port: Int,_ callback: ((Result<Int, Error>) -> Void)?){
         enableWifiServer = true
@@ -222,6 +237,10 @@ public class MitmService: NSObject {
     
     
     public func openLocalServer(ip: String, port: Int,_ callback: ((Result<Int, Error>) -> Void)?){
+        
+        let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self))) ip:\(ip) port:\(port)")
+        MitmService.sendLog(msg: name)
+
         
         enableLocalServer = true
         
