@@ -479,7 +479,6 @@
 		56F6A23522AC0984006626B2 /* ExtensionKeyboardObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F6A23122AC0984006626B2 /* ExtensionKeyboardObject.swift */; };
 		56F6A23622AC0984006626B2 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F6A23222AC0984006626B2 /* KeyboardManager.swift */; };
 		76BD4069B5DEA69FE4F9F580 /* Pods_PacketTunnel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1780182D785E498D13CA110E /* Pods_PacketTunnel.framework */; };
-		780BC06224D1AB0300EEA1C7 /* StringCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780BC05124D1AB0300EEA1C7 /* StringCode.swift */; };
 		7837CDF424C43F32008641A3 /* TunnelServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F415B62277119F00AE1554 /* TunnelServices.framework */; };
 		7837CDF524C43F32008641A3 /* TunnelServices.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 56F415B62277119F00AE1554 /* TunnelServices.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7870EE5424D2AD19004CEC21 /* LogOnline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7870EE4324D2AD19004CEC21 /* LogOnline.swift */; };
@@ -1191,11 +1190,7 @@
 		56F6A23022AC0984006626B2 /* KeyboardHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHeaderView.swift; sourceTree = "<group>"; };
 		56F6A23122AC0984006626B2 /* ExtensionKeyboardObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionKeyboardObject.swift; sourceTree = "<group>"; };
 		56F6A23222AC0984006626B2 /* KeyboardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
-
-		780BC05124D1AB0300EEA1C7 /* StringCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringCode.swift; sourceTree = "<group>"; };
-
 		7870EE4324D2AD19004CEC21 /* LogOnline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogOnline.swift; sourceTree = "<group>"; };
-
 		7BA4F9D1F9BD7E1C68E596AC /* Pods-TunnelServices.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelServices.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TunnelServices/Pods-TunnelServices.debug.xcconfig"; sourceTree = "<group>"; };
 		99BAB04DC95D77B60FFFF77E /* Pods-PacketTunnel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacketTunnel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PacketTunnel/Pods-PacketTunnel.debug.xcconfig"; sourceTree = "<group>"; };
 		BFE65698155AEF215FFC3F86 /* Pods-NIO1901.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NIO1901.release.xcconfig"; path = "Pods/Target Support Files/Pods-NIO1901/Pods-NIO1901.release.xcconfig"; sourceTree = "<group>"; };
@@ -2398,7 +2393,6 @@
 				56F415C22277122C00AE1554 /* Handler */,
 				5675D15922AFE2FE00562E73 /* Rule */,
 				56F415C92277122C00AE1554 /* MitmService.swift */,
-				780BC05124D1AB0300EEA1C7 /* StringCode.swift */,
 				565A4F5A2277436C00F13CAD /* Session.swift */,
 				566C76A622794C9300DA0B9E /* Task.swift */,
 				7870EE4324D2AD19004CEC21 /* LogOnline.swift */,
@@ -3400,7 +3394,6 @@
 				560438ED22853F84007CB3DB /* Data+Extension.swift in Sources */,
 				566C76CB227AE51C00DA0B9E /* Dictionary+Extension.swift in Sources */,
 				5634538322BA41490076219D /* HTTPServer.swift in Sources */,
-				780BC06224D1AB0300EEA1C7 /* StringCode.swift in Sources */,
 				56F415DB2277122D00AE1554 /* SSLHandler.swift in Sources */,
 				56F415DA2277122D00AE1554 /* HTTPSHandler.swift in Sources */,
 				565A4F422277427700F13CAD /* Types.swift in Sources */,

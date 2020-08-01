@@ -7,9 +7,7 @@
 //
 
 import NetworkExtension
-
 import TunnelServices
-
 //import AxLogger
 import Reachability
 //import Bugly
@@ -37,14 +35,14 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         
         
          let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self)))")
-         MitmService.sendLog(msg: name)
+//         LogOnline.sendLog(msg: name)
         
         if StartInExtension {
             guard let server = MitmService.prepare() else {
 //                BLYLogv(.error, "Start Tunel Failed! MitmService create Failed !", CVaListPointer)
                 NSLog("Start Tunel Failed! MitmService create Failed !")
                 let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self)))")
-                MitmService.sendLog(msg: "Start Tunel Failed! MitmService create Failed !")
+//                LogOnline.sendLog(msg: "Start Tunel Failed! MitmService create Failed !")
                 self.pendingStartCompletion(nil)
                 return
             }
@@ -58,7 +56,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
                     self.startVPNWithOptions(options: nil) { (error) in
                         if error == nil {
                             NSLog("***************** Start Tunel Success !")
-                            MitmService.sendLog(msg: "***************** Start Tunel Success !")
+//                            MitmService.sendLog(msg: "***************** Start Tunel Success !")
                             self.readPakcets()
                             self.pendingStartCompletion(nil)
                             

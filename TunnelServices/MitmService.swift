@@ -188,21 +188,45 @@ public class MitmService: NSObject {
         
     }
     
-     public static  func sendLog(msg:String) -> Void {
-          print("请求")
-         let urlStr  = String.init(format: ("http://182.92.2.5:8805/write?msg=\(msg)" as NSString) as String)
-         let fiaurl = URL.init(string: urlStr.tun_urlEncoded())
-          let request = URLRequest.init(url: fiaurl!)
-          let session = URLSession.shared
-          session.dataTask(with: request) { (dataT, resp, err) in
-              if err != nil{
-              }else{
-                  let str = NSString.init(data: dataT! , encoding:String.Encoding.utf8.rawValue)
-                  print("返回结果:\(String(describing: str))")
-              }
-          }.resume()
-      }
-      
+    public func openLocalServer(ip: String, port: Int,_ callback: ((Result<Int, Error>) -> Void)?){
+        let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self))) ip:\(ip) port:\(port)")
+        LogOnline.sendLog(msg: name)
+        enableLocalServer = true
+        //通过Bootstrap的bind方法来创建连接，我们也可以通过该方法返回的Channel来判断是否创建成功。
+        localChannel = try? localBootstrap.bind(host: ip, port: port).wait()
+        if localChannel == nil {
+            let errorStr = "Local Address was unable to bind.\(ip):\(port)"
+            AxLogger.log(errorStr, level: .Error)
+            localStarted = .failure
+            task.localState = -1
+            task.note = task.note + errorStr
+            try? task.update()
+            callback?(.failure(ServerChannelError(errCode: -1, localizedDescription: errorStr)))
+            return
+        }
+        guard let localAddress = localChannel.localAddress else {
+//            本地地址无法绑定。请检查插座没有关闭或地址系列是否被理解
+            let errorStr = "Local Address was unable to bind. Please check that the socket was not closed or that the address family was understood."
+            AxLogger.log(errorStr, level: .Error)
+            localStarted = .failure
+            task.localState = -1
+            task.note = task.note + errorStr
+            try? task.update()
+            callback?(.failure(ServerChannelError(errCode: -1, localizedDescription: errorStr)))
+            return
+        }
+        AxLogger.log("Local Server started and listening on \(localAddress)", level: .Info)
+        localStarted = .running
+        task.localState = 1
+        try? task.update()
+        callback?(.success(0))
+        try? localChannel.closeFuture.wait()
+        AxLogger.log("Local Server closed", level: .Info)
+        localStarted = .closed
+        task.localState = 0
+        try? task.update()
+    }
+  
     //MARK: 开启双端server
     public func openWifiServer(ip: String, port: Int,_ callback: ((Result<Int, Error>) -> Void)?){
         enableWifiServer = true
@@ -241,47 +265,7 @@ public class MitmService: NSObject {
     }
     
     
-    public func openLocalServer(ip: String, port: Int,_ callback: ((Result<Int, Error>) -> Void)?){
-        
-        let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self))) ip:\(ip) port:\(port)")
-        MitmService.sendLog(msg: name)
 
-        
-        enableLocalServer = true
-        
-        //通过Bootstrap的bind方法来创建连接，我们也可以通过该方法返回的Channel来判断是否创建成功。
-        localChannel = try? localBootstrap.bind(host: ip, port: port).wait()
-        if localChannel == nil {
-            let errorStr = "Local Address was unable to bind.\(ip):\(port)"
-            AxLogger.log(errorStr, level: .Error)
-            localStarted = .failure
-            task.localState = -1
-            task.note = task.note + errorStr
-            try? task.update()
-            callback?(.failure(ServerChannelError(errCode: -1, localizedDescription: errorStr)))
-            return
-        }
-        guard let localAddress = localChannel.localAddress else {
-            let errorStr = "Local Address was unable to bind. Please check that the socket was not closed or that the address family was understood."
-            AxLogger.log(errorStr, level: .Error)
-            localStarted = .failure
-            task.localState = -1
-            task.note = task.note + errorStr
-            try? task.update()
-            callback?(.failure(ServerChannelError(errCode: -1, localizedDescription: errorStr)))
-            return
-        }
-        AxLogger.log("Local Server started and listening on \(localAddress)", level: .Info)
-        localStarted = .running
-        task.localState = 1
-        try? task.update()
-        callback?(.success(0))
-        try? localChannel.closeFuture.wait()
-        AxLogger.log("Local Server closed", level: .Info)
-        localStarted = .closed
-        task.localState = 0
-        try? task.update()
-    }
     //MARK: 回调数据
     func runcallback(){
         guard let callback = compelete else {
