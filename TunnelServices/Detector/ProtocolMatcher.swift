@@ -17,10 +17,10 @@ class ProtocolMatcher {
     static let PENDING = 0
     
     // overwrite
-    //If match the protocol.
+    //如果符合协议。
     public func match(buf:ByteBuffer) -> Int {return -1}
     
-    //Deal with the pipeline when matched
+    //匹配时处理管道
     public func handlePipeline(pipleline:ChannelPipeline, task:Task) -> Void {}
     
 }

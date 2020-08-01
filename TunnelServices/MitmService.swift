@@ -68,13 +68,8 @@ public class MitmService: NSObject {
     
     public init(task:Task) {
         super.init()
-        
-        
-        LogOnline.sendLog(msg: "创建服务")
-        
         self.task = task
         let protocolDetector = ProtocolDetector(task: task ,matchers: [HttpMatcher(),HttpsMatcher(),SSLMatcher()])
-        
         //创建
         localBootstrap = ServerBootstrap(group: master, childGroup: worker)
             .serverChannelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)

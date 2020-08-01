@@ -22,9 +22,7 @@ public final class ProtocolDetector: ChannelInboundHandler, RemovableChannelHand
     public typealias InboundOut = ByteBuffer
     
     private var buf:ByteBuffer?
-    
     private var index:Int = 0 //
-
     private let matcherList: [ProtocolMatcher]
     public var task:Task
     
@@ -34,8 +32,6 @@ public final class ProtocolDetector: ChannelInboundHandler, RemovableChannelHand
     }
     
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
-        
-         LogOnline.sendLog(msg: "流程打印 \(#function) in \(type(of: self))")
         
         if let local = context.channel.localAddress?.description {
             let isLocal = local.contains("127.0.0.1")
@@ -58,7 +54,7 @@ public final class ProtocolDetector: ChannelInboundHandler, RemovableChannelHand
             let matcher = matcherList[i]
             let match = matcher.match(buf: buffer)
             if match == ProtocolMatcher.MATCH {
-                matcher.handlePipeline(pipleline: context.pipeline, task: task)
+                matcher.handlePipeline(pipleline: context.pipeline, task: task)   //区分MACTH
                 context.fireChannelRead(data)
                 context.pipeline.removeHandler(self, promise: nil)
                 return

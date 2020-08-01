@@ -36,11 +36,11 @@ class HTTPSHandler: ChannelInboundHandler, RemovableChannelHandler {
         case .head(let head):
             switch self.state {
             case .ready: self.state = .parsingBody(head, nil)
-            case .parsingBody: assert(false, "Unexpected HTTPServerRequestPart.head when body was being parsed.")
+            case .parsingBody: assert(false, "解析正文时出现意外的HTTPServerRequestPart.head.")
             }
         case .body(var body):
             switch self.state {
-            case .ready: assert(false, "Unexpected HTTPServerRequestPart.body when awaiting request head.")
+            case .ready: assert(false, "等待请求头时出现意外的HTTPServerRequestPart.body.")
             case .parsingBody(let head, let existingData):
                 let buffer: ByteBuffer
                 if var existing = existingData {
@@ -52,9 +52,9 @@ class HTTPSHandler: ChannelInboundHandler, RemovableChannelHandler {
                 self.state = .parsingBody(head, buffer)
             }
         case .end(let tailHeaders):
-            assert(tailHeaders == nil, "Unexpected tail headers")
+            assert(tailHeaders == nil, "意外的尾部标头")
             switch self.state {
-            case .ready: assert(false, "Unexpected HTTPServerRequestPart.end when awaiting request head.")
+            case .ready: assert(false, "等待请求头时出现意外的HTTPServerRequestPart.end.")
             case .parsingBody(var head, _):
                 let netReq = NetRequest(head)
                 // 移除代理相关头

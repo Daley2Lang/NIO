@@ -130,22 +130,28 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     
     func readPakcets() -> Void {
         packetFlow.readPackets { (packets, protocols) in
+            
+            let mutaData  = NSMutableData()
+            
             for packet in packets {
                 NSLog("Read Packet:",String(data: packet, encoding: .utf8) ?? "unknow")
                 
 //                let str  = String.init(format: "Read Packet:", String(data: packet, encoding: .utf8) ?? "unknow")
-                
-                
 //                let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self)))")
 //              MitmService.sendLog(msg: str)
-                
                 self.connection.write(packet, completionHandler: { (error) in
                     if let e = error {
 //                        AxLogger.log("write packet error :\(e.localizedDescription)", level: .Error)
                         NSLog("write packet error :\(e.localizedDescription)")
                     }
                 })
+                mutaData.append(packet)
             }
+            
+            
+            let messageString = NSString(data: mutaData as Data, encoding: String.Encoding.utf8.rawValue)
+            NSLog("读取的数据:", messageString ?? "unknow")
+            
             self.readPakcets()
         }
     }
