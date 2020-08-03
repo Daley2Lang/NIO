@@ -47,12 +47,21 @@ public class MitmService: NSObject {
     
     //DatagramBootstrap 数据报引导
 
+    //监听本地数据
     var localBootstrap:ServerBootstrap! //监听
     var localChannel:Channel!
     var localBindIP = ""
     var localBindPort = -1
     var localStarted = ServerState.none
     
+    //UDP 监控
+    var udpBootstrap:DatagramBootstrap! //监听
+    var udpChannel:Channel!
+    var udpBindIP = ""
+    var udpBindPort = -1
+    var udpStarted = ServerState.none
+    
+    //wifi 监听
     var wifiBootstrap:ServerBootstrap!
     var wifiChannel:Channel!
     var wifiBindIP = ""
@@ -60,6 +69,7 @@ public class MitmService: NSObject {
     var wifiStarted = ServerState.none
     // 是否启用局域网监听
     var enableWifiServer = true
+     var enableUDPServer = true
     var enableLocalServer = true
     
     var compelete:((Result<Int, Error>) -> Void)?
@@ -70,8 +80,10 @@ public class MitmService: NSObject {
         super.init()
         self.task = task
         let protocolDetector = ProtocolDetector(task: task ,matchers: [HttpMatcher(),HttpsMatcher(),SSLMatcher()])
+        let udpHandler = UDPHandler()
+        
         //创建
-        DatagramBootstrap
+//        DatagramBootstrap
         localBootstrap = ServerBootstrap(group: master, childGroup: worker)
             .serverChannelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
             .childChannelInitializer { channel in
@@ -81,6 +93,30 @@ public class MitmService: NSObject {
             .childChannelOption(ChannelOptions.maxMessagesPerRead, value: 1)
             .childChannelOption(ChannelOptions.allowRemoteHalfClosure, value: false)
             .childChannelOption(ChannelOptions.connectTimeout, value: TimeAmount.seconds(10))
+      
+        
+
+        
+        
+        
+        
+//        udpBootstrap = ServerBootstrap(group: master, childGroup: worker)
+//               .serverChannelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
+//               .childChannelInitializer { channel in
+//                   channel.pipeline.addHandler(udpHandler, name: "ProtocolDetector", position: .first)
+//               }
+//               .childChannelOption(ChannelOptions.socket(IPPROTO_U, TCP_NODELAY), value: 1)
+//               .childChannelOption(ChannelOptions.maxMessagesPerRead, value: 1)
+//               .childChannelOption(ChannelOptions.allowRemoteHalfClosure, value: false)
+//               .childChannelOption(ChannelOptions.connectTimeout, value: TimeAmount.seconds(10))
+//
+        
+        udpBootstrap = DatagramBootstrap(group: master)
+            .channelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
+            .channelInitializer { (channel) -> EventLoopFuture<Void> in
+                channel.pipeline.addHandler(udpHandler)
+        }
+     
         //
         wifiBootstrap = ServerBootstrap(group: master, childGroup: worker)
             .serverChannelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
@@ -159,9 +195,6 @@ public class MitmService: NSObject {
         task.createFileFolder()
         task.numberOfUse = NSNumber(value: task.numberOfUse.intValue + 1)
         
-        
-        LogOnline.sendLog(msg: "运行中。。。\(task.numberOfUse)")
-        
         try? task.update()
         if task.localEnable == 1 {
             DispatchQueue.global().async {
@@ -171,6 +204,17 @@ public class MitmService: NSObject {
                 })
             }
         }
+        
+    
+        DispatchQueue.global().async {
+            //开启本地服务
+            self.openUDPServer(ip: self.task.localIP, port: Int(truncating: self.task.localPort), { (r) in
+                self.runcallback()
+            })
+        }
+        
+        
+        
         if task.wifiIP != "" {
             wifiIsOpen = true
         }
@@ -183,10 +227,40 @@ public class MitmService: NSObject {
         }
         
     }
-    
+    public func openUDPServer(ip: String, port: Int,_ callback: ((Result<Int, Error>) -> Void)?){
+        enableUDPServer = true
+        udpChannel = try? udpBootstrap.bind(host: ip, port: port).wait()
+        if udpChannel == nil {
+            let errorStr = "udp Address was unable to bind.\(ip):\(port)"
+            AxLogger.log(errorStr, level: .Error)
+            udpStarted = .failure
+            callback?(.failure(ServerChannelError(errCode: -1, localizedDescription: errorStr)))
+        }
+
+        guard let udpAddress = udpChannel.localAddress else {
+            let errorStr = "Local Address was unable to bind. Please check that the socket was not closed or that the address family was understood."
+            AxLogger.log(errorStr, level: .Error)
+            task.localState = -1
+            try? task.update()
+            callback?(.failure(ServerChannelError(errCode: -1, localizedDescription: errorStr)))
+            return
+        }
+        
+        
+        AxLogger.log("Local Server started and listening on \(udpAddress)", level: .Info)
+        udpStarted = .running
+//        task.localState = 1
+//        try? task.update()
+        callback?(.success(0))
+        try? localChannel.closeFuture.wait()
+        AxLogger.log("Local Server closed", level: .Info)
+        localStarted = .closed
+//        task.localState = 0
+//        try? task.update()
+             
+    }
     public func openLocalServer(ip: String, port: Int,_ callback: ((Result<Int, Error>) -> Void)?){
-        let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self))) ip:\(ip) port:\(port)")
-        LogOnline.sendLog(msg: name)
+        
         enableLocalServer = true
         //通过Bootstrap的bind方法来创建连接，我们也可以通过该方法返回的Channel来判断是否创建成功。
         localChannel = try? localBootstrap.bind(host: ip, port: port).wait()

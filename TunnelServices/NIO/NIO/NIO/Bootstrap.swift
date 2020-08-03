@@ -386,7 +386,7 @@ public final class ClientBootstrap {//ClientBootstrap（用于 TCP Channel）
     ///            than one `Channel`.
     ///
     /// - parameters:
-    ///     - handler: A closure that initializes the provided `Channel`.
+    ///     - handler: A closure that initializes the provided `Channel`. 一个关闭提供的`Channel`的闭包。
     public func channelInitializer(_ handler: @escaping (Channel) -> EventLoopFuture<Void>) -> Self {
         self.channelInitializer = handler
         return self

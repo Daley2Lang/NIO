@@ -13,11 +13,11 @@ import NIOHTTP1
 import NIOConcurrencyHelpers
 import NIOSSL
 import Network
-final class UDPHandler: ChannelInboundHandler {
+final class UDPHandler: ChannelInboundHandler,RemovableChannelHandler {
       typealias InboundIn = AddressedEnvelope<ByteBuffer>
       typealias OutboundOut = AddressedEnvelope<ByteBuffer>
       
-      func channelRead(ctx: ChannelHandlerContext, data: NIOAny) {
+    public  func channelRead(ctx: ChannelHandlerContext, data: NIOAny) {
           let getData = unwrapInboundIn(data)
           print(getData.data)
       }
