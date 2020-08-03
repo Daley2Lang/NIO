@@ -49,8 +49,6 @@ public final class ProtocolDetector: ChannelInboundHandler, RemovableChannelHand
         //TODO: 需要处理粘包情况以及数据不完整情况
         for i in index..<matcherList.count {
             
-            LogOnline.sendLog(msg: "处理器的数量:\(matcherList.count)")
-            
             let matcher = matcherList[i]
             let match = matcher.match(buf: buffer)
             if match == ProtocolMatcher.MATCH {

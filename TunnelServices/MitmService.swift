@@ -71,6 +71,7 @@ public class MitmService: NSObject {
         self.task = task
         let protocolDetector = ProtocolDetector(task: task ,matchers: [HttpMatcher(),HttpsMatcher(),SSLMatcher()])
         //创建
+        DatagramBootstrap
         localBootstrap = ServerBootstrap(group: master, childGroup: worker)
             .serverChannelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
             .childChannelInitializer { channel in

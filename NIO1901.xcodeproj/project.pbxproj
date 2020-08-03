@@ -481,6 +481,7 @@
 		76BD4069B5DEA69FE4F9F580 /* Pods_PacketTunnel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1780182D785E498D13CA110E /* Pods_PacketTunnel.framework */; };
 		7837CDF424C43F32008641A3 /* TunnelServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F415B62277119F00AE1554 /* TunnelServices.framework */; };
 		7837CDF524C43F32008641A3 /* TunnelServices.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 56F415B62277119F00AE1554 /* TunnelServices.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7857B4C324D81602005FAD78 /* UDPHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7857B4C224D81602005FAD78 /* UDPHandler.swift */; };
 		7870EE5424D2AD19004CEC21 /* LogOnline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7870EE4324D2AD19004CEC21 /* LogOnline.swift */; };
 		B4691E98DF99033F35092394 /* Pods_NIO1901.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BA101E61A6310187327755 /* Pods_NIO1901.framework */; };
 		F27F1CCDEAB554595C667837 /* Pods_TunnelServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37229E5356996334ABDBCD0F /* Pods_TunnelServices.framework */; };
@@ -1190,6 +1191,7 @@
 		56F6A23022AC0984006626B2 /* KeyboardHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHeaderView.swift; sourceTree = "<group>"; };
 		56F6A23122AC0984006626B2 /* ExtensionKeyboardObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionKeyboardObject.swift; sourceTree = "<group>"; };
 		56F6A23222AC0984006626B2 /* KeyboardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
+		7857B4C224D81602005FAD78 /* UDPHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPHandler.swift; sourceTree = "<group>"; };
 		7870EE4324D2AD19004CEC21 /* LogOnline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogOnline.swift; sourceTree = "<group>"; };
 		7BA4F9D1F9BD7E1C68E596AC /* Pods-TunnelServices.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelServices.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TunnelServices/Pods-TunnelServices.debug.xcconfig"; sourceTree = "<group>"; };
 		99BAB04DC95D77B60FFFF77E /* Pods-PacketTunnel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacketTunnel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PacketTunnel/Pods-PacketTunnel.debug.xcconfig"; sourceTree = "<group>"; };
@@ -2447,6 +2449,7 @@
 				56F415D52277122D00AE1554 /* SSLMatcher.swift */,
 				56F415D22277122D00AE1554 /* ProtocolDetector.swift */,
 				56F415D42277122D00AE1554 /* ProtocolMatcher.swift */,
+				7857B4C224D81602005FAD78 /* UDPHandler.swift */,
 			);
 			path = Detector;
 			sourceTree = "<group>";
@@ -3398,6 +3401,7 @@
 				56F415DA2277122D00AE1554 /* HTTPSHandler.swift in Sources */,
 				565A4F422277427700F13CAD /* Types.swift in Sources */,
 				56F415D72277122D00AE1554 /* TunnelProxyHandler.swift in Sources */,
+				7857B4C324D81602005FAD78 /* UDPHandler.swift in Sources */,
 				5675D16722AFE36900562E73 /* Date+Extension.swift in Sources */,
 				565A4F3D2277427700F13CAD /* ASProtocol+introspection.swift in Sources */,
 			);

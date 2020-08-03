@@ -17,6 +17,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     // MARK: Properties
 
     open var connection: NWTCPConnection! //默认
+    open var session:NWUDPSession!;
     var mitmServer: MitmService!
     var reachability = try! Reachability() //发生错误一定报错，？的话 发生错误返回nil
     
@@ -32,17 +33,9 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     override func startTunnel(options: [String : NSObject]?, completionHandler: @escaping (Error?) -> Void) {
         pendingStartCompletion = completionHandler
 //        // 正常启动
-        
-        
-         let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self)))")
-//         LogOnline.sendLog(msg: name)
-        
         if StartInExtension {
             guard let server = MitmService.prepare() else {
-//                BLYLogv(.error, "Start Tunel Failed! MitmService create Failed !", CVaListPointer)
                 NSLog("Start Tunel Failed! MitmService create Failed !")
-                let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self)))")
-//                LogOnline.sendLog(msg: "Start Tunel Failed! MitmService create Failed !")
                 self.pendingStartCompletion(nil)
                 return
             }
@@ -51,8 +44,10 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
                 switch result {
                 case .success( _):
                     let endpoint = NWHostEndpoint(hostname:"127.0.0.1", port:"8034")//是表示网络端点的抽象基类，例如远程服务器上的端口。 所有实例都应使用NWHostEndpoint或NWBonjourServiceEndpoint之一的子类创建。
-                    
                     self.connection = self.createTCPConnection(to: endpoint, enableTLS:false, tlsParameters:nil, delegate:nil)
+                    
+//                    self.session = self.createUDPSession(to: endpoint, from: endpoint)
+                    
                     self.startVPNWithOptions(options: nil) { (error) in
                         if error == nil {
                             NSLog("***************** Start Tunel Success !")
@@ -132,13 +127,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         packetFlow.readPackets { (packets, protocols) in
             
             let mutaData  = NSMutableData()
-            
             for packet in packets {
                 NSLog("Read Packet:",String(data: packet, encoding: .utf8) ?? "unknow")
-                
-//                let str  = String.init(format: "Read Packet:", String(data: packet, encoding: .utf8) ?? "unknow")
-//                let name  = String.init(format: "\(#function) in \(NSStringFromClass(type(of: self)))")
-//              MitmService.sendLog(msg: str)
                 self.connection.write(packet, completionHandler: { (error) in
                     if let e = error {
 //                        AxLogger.log("write packet error :\(e.localizedDescription)", level: .Error)
