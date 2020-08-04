@@ -229,7 +229,7 @@ public class MitmService: NSObject {
     }
     public func openUDPServer(ip: String, port: Int,_ callback: ((Result<Int, Error>) -> Void)?){
         enableUDPServer = true
-        udpChannel = try? udpBootstrap.bind(host: ip, port: port).wait()
+        udpChannel = try? udpBootstrap.bind(host: ip, port: 9527).wait()
         if udpChannel == nil {
             let errorStr = "udp Address was unable to bind.\(ip):\(port)"
             AxLogger.log(errorStr, level: .Error)

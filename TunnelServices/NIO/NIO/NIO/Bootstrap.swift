@@ -111,6 +111,26 @@ public final class ServerBootstrap { //ServerBootstrap（用于监听 Channel）
     ///
     /// - parameters:
     ///     - initializer: A closure that initializes the provided `Channel`.
+    
+    
+   /*
+     
+     使用"初始化器"初始化已接受的"套接通道"。初始化器中最常见的任务是添加
+        "通道手到 "通道管道"
+        
+        - 警告：对于每个接受的连接，将调用一次"初始化器"。因此，它通常是
+        正确的选择， 以实例化有状态的 '通道手' 的关闭， 以确保他们不是
+        不小心在 "频道" 之间共享。有些专家用例需要有状态处理程序
+        跨"通道"共享，在这种情况下，用户负责同步状态访问
+        适当.
+        
+        接受的"通道"将在"字节缓冲区"上作为入站消息运行，将"IOData"作为出站
+        
+        - 参数：
+        - 初始化器：初始化提供的"通道"的闭包。
+     
+     */
+    
     public func childChannelInitializer(_ initializer: @escaping (Channel) -> EventLoopFuture<Void>) -> Self {
         self.childChannelInit = initializer
         return self
